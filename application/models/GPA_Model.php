@@ -122,10 +122,14 @@ class GPA_Model extends CI_Model
 		if ($query->num_rows() > 0)
 		{
 			$_SESSION['userid'] = $userid;
+			if ($name != '')
+			{
+				$this->db->update('user', array('name' => $name), array('userid' => $userid));
+			}
 		}
-		else
+		else if ($this->db->insert('user', array('userid' => $userid, 'name' => $name)))
 		{
-			$this->db->insert('user', array('userid' => $userid, 'name' => $name));
+			$_SESSION['userid'] = $userid;
 		}
 	}
 }

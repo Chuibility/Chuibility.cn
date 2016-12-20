@@ -22,7 +22,8 @@
 				<label for="form-cource">Grade:&nbsp;</label>
 				<div id="form-cource" class="btn-group">
 					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-					        aria-haspopup="true" aria-expanded="false" id="btn-grade">A</button>
+					        aria-haspopup="true" aria-expanded="false" id="btn-grade">
+					</button>
 					<div class="dropdown-menu">
 						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">A+</a>
 						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">A</a>
@@ -56,7 +57,7 @@
 			<div class="row">
 				<div class="col-sm-2"><?= $item->courseid ?></div>
 				<div class="col-sm-2"><?= $item->letter ?></div>
-				<div class="col-sm-2"><?= sprintf('%.1f', $item->grade / 10) ?></div>
+				<div class="col-sm-2"><?= sprintf('%.1f', min(40, $item->grade) / 10) ?></div>
 				<div class="col-sm-2"><?= $item->credit ?></div>
 				<div class="col-sm-2"><?= $item->core == '1' ? '√' : '×' ?></div>
 				<div class="col-sm-2">
@@ -96,6 +97,7 @@
 		
 		console.log(gpa);
 		
+		$("#btn-grade").html('A');
 		
 		for (var index in course_list)
 		{

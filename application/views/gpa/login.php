@@ -9,7 +9,7 @@
 			</div>
 			<div class="form-group">
 				<label>Name</label>
-				<input type="text" class="form-control" name="name"">
+				<input type="text" class="form-control" name="name" placeholder="Please use English">
 			</div>
 			<button type="submit" class="btn btn-primary">Login</button>
 		</form>

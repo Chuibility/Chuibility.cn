@@ -77,6 +77,11 @@ class Edit extends CI_Controller
 	{
 		//$_SESSION['userid'] = '515370910207';
 		
+		if (!isset($_SESSION['userid']) || $_SESSION['userid'] == '')
+		{
+			redirect(base_url('gpa'));
+		}
+		
 		$cal = $this->GPA_Model->calculate();
 		
 		$gpa_list = $cal['result'];

@@ -12,20 +12,20 @@
 		
 		<div class="text-xs-center">
 			<div class="row">
-				<div class="col-sm-2">No.</div>
-				<div class="col-sm-2">Name</div>
+				<div class="col-sm-1">No.</div>
+				<div class="col-sm-3">Name</div>
 				<div class="col-sm-2">Core GPA</div>
 				<div class="col-sm-2">Core Credits</div>
 				<div class="col-sm-2">Total GPA</div>
 				<div class="col-sm-2">Total Credits</div>
 			</div>
 		</div>
-		
+		<?php $no = 0; ?>
 		<?php foreach ($list as $key => $item): ?>
 			<?php if ($item->total_credit > 0 && $item->id != 1): ?>
 				<div class="row text-xs-center">
-					<div class="col-sm-2"><?= $key + 1 ?></div>
-					<div class="col-sm-2"><?= $item->name ?></div>
+					<div class="col-sm-1"><?= ++$no ?></div>
+					<div class="col-sm-3"><?= $item->name ?></div>
 					<div class="col-sm-2"><?= sprintf('%.4f', $item->core_gpa) ?></div>
 					<div class="col-sm-2"><?= $item->core_credit ?></div>
 					<div class="col-sm-2"><?= sprintf('%.4f', $item->total_gpa) ?></div>

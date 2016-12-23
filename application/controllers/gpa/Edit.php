@@ -77,12 +77,38 @@ class Edit extends CI_Controller
 	{
 		//$_SESSION['userid'] = '515370910207';
 		
+		$permission = true;
+		
 		if (!isset($_SESSION['userid']) || $_SESSION['userid'] == '')
 		{
 			redirect(base_url('gpa'));
 		}
 		
-		$cal = $this->GPA_Model->calculate();
+		$userid = $this->input->get('id');
+		
+		if (!$userid || $userid == $_SESSION['userid'])
+		{
+			$userid = $_SESSION['userid'];
+		}
+		
+		$user = $this->GPA_Model->getUser($userid);
+		
+		if ($user == NULL)
+		{
+			redirect(base_url('gpa'));
+		}
+		
+		if ($user->userid != $_SESSION['userid'])
+		{
+			$user2 = $this->GPA_Model->getUser($_SESSION['userid']);
+			if ($user->open == 0 || $user2->open == 0 || $user2->chuibility == 0)
+			{
+				$permission = false;
+				$userid = $_SESSION['userid'];
+			}
+		}
+		
+		$cal = $this->GPA_Model->calculate($userid);
 		
 		$gpa_list = $cal['result'];
 		$gpa = $cal['data'];
@@ -109,13 +135,28 @@ class Edit extends CI_Controller
 		
 		//print_r($gpa_list);
 		
+		
 		$data = array(
-			'course'   => $course,
-			'gpa_list' => $gpa_list,
-			'gpa'      => $gpa
+			'course'     => $course,
+			'gpa_list'   => $gpa_list,
+			'gpa'        => $gpa,
+			'user'       => $user,
+			'other'      => $userid != $_SESSION['userid'],
+			'permission' => $permission
 		);
 		
 		$this->load->view('gpa/edit', $data);
 	}
 	
+	public function open()
+	{
+		$this->GPA_Model->open('1');
+		redirect(base_url('gpa/edit'));
+	}
+	
+	public function close()
+	{
+		$this->GPA_Model->open('0');
+		redirect(base_url('gpa/edit'));
+	}
 }

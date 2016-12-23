@@ -13,7 +13,21 @@ class Home extends CI_Controller
 	{
 		$list = $this->GPA_Model->getGPAList();
 		
-		$data = array('list' => $list);
+		if (!isset($_SESSION['userid']))
+		{
+			$_SESSION['userid'] = '';
+		}
+		
+		$user = $this->GPA_Model->getUser($_SESSION['userid']);
+		
+		if ($user == NULL)
+		{
+			$user = new stdClass();
+			$user->open = '0';
+		}
+		
+		$data = array('list' => $list, 'user' => $user);
+		
 		
 		$this->load->view('gpa/index', $data);
 	}

@@ -13,10 +13,11 @@ class Login extends CI_Controller
 	{
 		$userid = $this->input->get('userid');
 		$name = $this->input->get('name');
+		$psw = $this->input->get('psw');
 		
-		if ((int)($userid)==$userid && strlen($userid) == 12 || strlen($userid) == 10)
+		if ((int)($userid) == $userid && strlen($userid) == 12 || strlen($userid) == 10)
 		{
-			$this->GPA_Model->login($userid, $name);
+			$this->GPA_Model->login($userid, $name, $psw);
 			if (!isset($_SESSION['userid']) || $_SESSION['userid'] == '')
 			{
 				$this->load->view('gpa/login');

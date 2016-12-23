@@ -6,5 +6,6 @@
 <hr>
 
 <div class="container">
-	Powered by Liu Yihao, All RIght Reserved.
+	Powered by Liu Yihao, All RIght Reserved.<br>
+	The data will be kept secret if not allowed to be shown to public.
 </div>

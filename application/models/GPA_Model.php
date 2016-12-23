@@ -3,6 +3,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class GPA_Model extends CI_Model
 {
+	public function setAllCourse($data)
+	{
+		$this->db->truncate('course');
+		foreach ($data as $key => $value)
+		{
+			$data[$key] = array(
+				'courseid' => $data[$key][0],
+				'credit'   => $data[$key][1],
+				'core'     => $data[$key][2],
+			);
+		}
+		$this->db->insert_batch('course', $data);
+		return $data;
+	}
 	
 	public function getAllCourse()
 	{
@@ -38,8 +52,12 @@ class GPA_Model extends CI_Model
 		$this->db->delete('gpalist', array('courseid' => $courseid, 'userid' => $_SESSION['userid']));
 	}
 	
-	public function calculate()
+	public function calculate($userid = '')
 	{
+		if ($userid == '')
+		{
+			$userid = $_SESSION['userid'];
+		}
 		$data = array(
 			'core_grade'   => 0,
 			'total_grade'  => 0,
@@ -63,7 +81,7 @@ class GPA_Model extends CI_Model
 			'0'  => 'F'
 		);
 		
-		$query = $this->db->select('*')->from('gpalist')->where(array('userid' => $_SESSION['userid']))
+		$query = $this->db->select('*')->from('gpalist')->where(array('userid' => $userid))
 		                  ->order_by('courseid', 'ASC')->get();
 		$result = $query->result();
 		foreach ($result as $key => $item)
@@ -103,7 +121,7 @@ class GPA_Model extends CI_Model
 			'core_credit'  => $data['core_credit'],
 			'total_gpa'    => $data['total_gpa'],
 			'total_credit' => $data['total_credit'],),
-		                           array('userid' => $_SESSION['userid']));
+		                           array('userid' => $userid));
 		
 		
 		return array('result' => $result, 'data' => $data);
@@ -116,20 +134,51 @@ class GPA_Model extends CI_Model
 		return $query->result();
 	}
 	
-	public function login($userid, $name)
+	public function login($userid, $name, $psw)
 	{
 		$query = $this->db->get_where('user', array('userid' => $userid));
 		if ($query->num_rows() > 0)
 		{
+			$user = $query->row(0);
+			if ($user->psw == '' && $psw != '')
+			{
+				$this->db->update('user', array('psw' => md5($psw)), array('userid' => $userid));
+			}
+			else if ($user->psw != md5($psw))
+			{
+				$_SESSION['userid'] = '';
+				return;
+			}
 			$_SESSION['userid'] = $userid;
 			if ($name != '')
 			{
 				$this->db->update('user', array('name' => $name), array('userid' => $userid));
 			}
 		}
-		else if ($this->db->insert('user', array('userid' => $userid, 'name' => $name)))
+		else if ($this->db->insert('user', array(
+			'userid'     => $userid,
+			'name'       => $name,
+			'psw'        => md5($psw),
+			'open'       => '0',
+			'chuibility' => '0'))
+		)
 		{
 			$_SESSION['userid'] = $userid;
 		}
+	}
+	
+	public function open($flag)
+	{
+		$this->db->update('user', array('open' => $flag), array('userid' => $_SESSION['userid']));
+	}
+	
+	public function getUser($userid)
+	{
+		$query = $this->db->get_where('user', array('userid' => $userid));
+		if ($query->num_rows() > 0)
+		{
+			return $query->row(0);
+		}
+		return NULL;
 	}
 }

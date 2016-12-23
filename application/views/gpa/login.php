@@ -8,6 +8,10 @@
 				<input type="text" class="form-control" name="userid">
 			</div>
 			<div class="form-group">
+				<label>Password</label>
+				<input type="password" class="form-control" name="psw" placeholder="Will be set when it is first entered">
+			</div>
+			<div class="form-group">
 				<label>Name</label>
 				<input type="text" class="form-control" name="name" placeholder="Please use English">
 			</div>

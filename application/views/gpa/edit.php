@@ -2,44 +2,89 @@
 
 <div class="container">
 	
-	<button class="btn btn-outline-primary" id="btn-add">Add</button>
-	
+	<?php if ($other): ?>
+		<div class="text-xs-center">
+			<h5>
+				Checking GPA of <?= $user->name; ?>
+			</h5>
+		</div>
+	<?php else: ?>
+		
+		<?php if (!$permission): ?>
+			<div class="text-xs-center">
+				<h5>
+					You don't have the permission to check his/her GPA<br>
+					It's because you or him/her haven't set it open to others<br>
+					Or you are not permitted by the site holder.
+				</h5>
+			</div>
+			<?php else: ?>
+			<div class="text-xs-center">
+				<h5>
+					If you open your GPA to others, those who also open their GPA can see yours.<br>
+					It is called the GPL License.
+				</h5>
+			</div>
+		<?php endif; ?>
+		
+		<?php if ($user->open == '1'): ?>
+			<!--<a class="btn btn-outline-warning" href="/gpa/edit/close">Hide to public</a>-->
+		<?php else: ?>
+			<a class="btn btn-outline-success" href="/gpa/edit/open">Open to public (permanently)</a>
+		<?php endif; ?>
+		
+		
+		<button class="btn btn-outline-primary" id="btn-add">Add</button>
+	<?php endif; ?>
 	<br><br>
 	
+	
 	<div class="card" id="form-add" style="display: none">
-		<div class="card-block">
-			<div class="form-group">
-				<label for="form-cource">Course:</label>
-				<div id="form-cource" class="btn-group">
-					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-					        aria-haspopup="true" aria-expanded="false" id="btn-course">Select
-					</button>
-					<div class="dropdown-menu" id="course-munu">
+		<div class="card-block row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="form-cource">Course:</label>
+					<div id="form-cource" class="btn-group">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+						        aria-haspopup="true" aria-expanded="false" id="btn-course">Select
+						</button>
+						<div class="dropdown-menu" id="course-munu">
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="form-cource">Grade:&nbsp;</label>
-				<div id="form-cource" class="btn-group">
-					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-					        aria-haspopup="true" aria-expanded="false" id="btn-grade">
-					</button>
-					<div class="dropdown-menu">
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">A+</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">A</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">A-</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">B+</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">B</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">B-</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">C+</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">C</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">C-</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">D</a>
-						<a class="dropdown-item grade-menu-item" href="javascript:void(0);">F</a>
+				<div class="form-group">
+					<label for="form-cource">Grade:&nbsp;</label>
+					<div id="form-cource" class="btn-group">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+						        aria-haspopup="true" aria-expanded="false" id="btn-grade">
+						</button>
+						<div class="dropdown-menu">
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">A+</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">A</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">A-</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">B+</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">B</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">B-</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">C+</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">C</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">C-</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">D</a>
+							<a class="dropdown-item grade-menu-item" href="javascript:void(0);">F</a>
+						</div>
 					</div>
 				</div>
+				<button class="btn btn-outline-success" id="btn-submit">Submit</button>
 			</div>
-			<button class="btn btn-outline-success" id="btn-submit">Submit</button>
+			<div class="col-sm-6">
+				<p>
+					TH000 思想道德修养与法律基础<br>
+					TH004 军事理论<br>
+					TH007 马克思主义基本原理<br>
+					TH009 形势与政策<br>
+					TH012 毛泽东思想和中国特色社会主义理论体系概论<br>
+					TH021 中国近现代史纲要<br>
+				</p>
+			</div>
 		</div>
 	</div>
 	
@@ -50,7 +95,9 @@
 			<div class="col-sm-2">GPA</div>
 			<div class="col-sm-2">Credits</div>
 			<div class="col-sm-2">Core</div>
-			<div class="col-sm-2">Operation</div>
+			<?php if (!$other): ?>
+				<div class="col-sm-2">Operation</div>
+			<?php endif; ?>
 		</div>
 		<hr>
 		<?php foreach ($gpa_list as $item): ?>
@@ -60,10 +107,12 @@
 				<div class="col-sm-2"><?= sprintf('%.1f', min(40, $item->grade) / 10) ?></div>
 				<div class="col-sm-2"><?= $item->credit ?></div>
 				<div class="col-sm-2"><?= $item->core == '1' ? '√' : '×' ?></div>
-				<div class="col-sm-2">
-					<button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?= $item->courseid ?>">Delete
-					</button>
-				</div>
+				<?php if (!$other): ?>
+					<div class="col-sm-2">
+						<button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?= $item->courseid ?>">Delete
+						</button>
+					</div>
+				<?php endif; ?>
 			</div>
 		<?php endforeach; ?>
 	</div>

@@ -24,6 +24,7 @@ class Home extends CI_Controller
 		{
 			$user = new stdClass();
 			$user->open = '0';
+			$user->chuibility = '0';
 		}
 		
 		$data = array('list' => $list, 'user' => $user);

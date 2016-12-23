@@ -15,6 +15,11 @@ class GPA_Model extends CI_Model
 			);
 		}
 		$this->db->insert_batch('course', $data);
+		$query = $this->db->get('user');
+		foreach ($query->result() as $item)
+		{
+			$this->calculate($item->userid);
+		}
 		return $data;
 	}
 	
